@@ -25,6 +25,6 @@ steps:
   displayName: 'Installing pytest and running tests'
 
 - script: |
-    heroku git:remote -a the-next-skynet
-    git push heroku master
+    git remote add heroku https://git.heroku.com/the-next-skynet.git
+    git push heroku $(Build.SourceBranchName)
   displayName: 'Deployment'
