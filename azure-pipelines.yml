@@ -26,6 +26,6 @@ steps:
 
 - script: |
     git checkout $(Build.SourceBranchName)
-    git remote add heroku https://git.heroku.com/the-next-skynet.git
+    git remote add heroku https://heroku:$(pat)@git.heroku.com/the-next-skynet.git
     git push heroku $(Build.SourceBranchName)
   displayName: 'Deployment'
