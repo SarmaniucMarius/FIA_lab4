@@ -17,4 +17,14 @@ steps:
 - script: |
     python -m pip install --upgrade pip
     pip install -r requirements.txt
-  displayName: 'Install dependencies'
+  displayName: 'Installing python dependencies'
+
+- script: |
+    pip install pytest pytest-azurepipelines
+    pytest tests.py
+  displayName: 'Installing pytest and running tests'
+
+- script: |
+    heroku git:remote -a the-next-skynet
+    git push heroku master
+  displayName: 'Deployment'

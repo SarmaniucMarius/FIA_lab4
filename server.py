@@ -5,16 +5,13 @@ import os
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
-regr = None
 
 
-def train():
-    global regr
-
+def train(cols):
     df = pandas.read_csv("apartmentComplexData.txt",
                          names=["IGNORED1", "IGNORED2", "complexAge", "totalRooms", "totalBedrooms",
-                                "complexInhabitants", "apartmentsNr", "IGNORED8", "medianCompexValue"])
-    df = df.drop(["IGNORED1", "IGNORED2", "IGNORED8"], axis=1)
+                                "complexInhabitants", "apartmentsNr", "IGNORED8", "medianCompexValue"],
+                         usecols=cols)
 
     X = df.iloc[:, 0:5]
     Y = df.iloc[:, 5]
@@ -26,13 +23,7 @@ def train():
     regr = linear_model.LinearRegression()
     regr.fit(X_train, y_train)
 
-    # prediction = regr.predict(X_test)
-    # print("ORDINARY LEAST SQUARES")
-    # print(X_test)
-    # a = pandas.DataFrame({"Prediction": prediction, "Actual": y_test})
-    # print(a.head())
-    # print('Score: %.2f' % regr.score(X_test, y_test))
-    # print("===================================")
+    return regr, X_test, y_test
 
 
 @app.route('/')
@@ -40,8 +31,12 @@ def render_main_page():
     return render_template("index.html")
 
 
+regression_model = None
+
+
 @app.route('/predict', methods=["POST"])
 def predict_price():
+    global regression_model
     user_data = request.form.to_dict()
     complexAge = float(user_data["complexAge"])
     totalRooms = float(user_data["totalRooms"])
@@ -51,11 +46,11 @@ def predict_price():
     data = [[complexAge, totalRooms, totalBedrooms, complexInhabitants, apartmentsNr]]
     data = preprocessing.normalize(data, norm='l2')
 
-    x = regr.predict(data)
+    x = regression_model.predict(data)
     return str(x)
 
 
 if __name__ == "__main__":
-    train()
+    regression_model = train(["complexAge", "totalRooms", "totalBedrooms", "complexInhabitants", "apartmentsNr", "medianCompexValue"])
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
