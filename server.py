@@ -2,12 +2,15 @@ from sklearn import linear_model, preprocessing
 from sklearn.model_selection import train_test_split
 import pandas
 import os
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
+regr = None
 
 
 def train():
+    global regr
+
     df = pandas.read_csv("apartmentComplexData.txt",
                          names=["IGNORED1", "IGNORED2", "complexAge", "totalRooms", "totalBedrooms",
                                 "complexInhabitants", "apartmentsNr", "IGNORED8", "medianCompexValue"])
@@ -31,9 +34,9 @@ def train():
     print("===================================")
 
 
-@app.route('/hello')
-def hello_world():
-    return 'Hello World!'
+@app.route('/')
+def render_main_page():
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
