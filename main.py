@@ -1,9 +1,6 @@
-import numpy as np
-from sklearn import datasets, linear_model, preprocessing, svm
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn import linear_model, preprocessing
 from sklearn.model_selection import train_test_split
 import pandas
-from sklearn.neural_network import MLPRegressor
 
 if __name__ == "__main__":
     df = pandas.read_csv("apartmentComplexData.txt",
