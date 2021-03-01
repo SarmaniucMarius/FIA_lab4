@@ -28,7 +28,8 @@ def train(cols):
 
 @app.route('/')
 def render_main_page():
-    return render_template("index.html")
+    return "Hello World"
+    # return render_template("index.html")
 
 
 regression_model = None
