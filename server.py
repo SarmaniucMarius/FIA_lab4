@@ -51,6 +51,6 @@ def predict_price():
 
 
 if __name__ == "__main__":
-    regression_model = train(["complexAge", "totalRooms", "totalBedrooms", "complexInhabitants", "apartmentsNr", "medianCompexValue"])
+    regression_model, X_test, y_test = train(["complexAge", "totalRooms", "totalBedrooms", "complexInhabitants", "apartmentsNr", "medianCompexValue"])
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
